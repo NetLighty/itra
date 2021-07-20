@@ -20,21 +20,21 @@ private static void checkArgs(String[] args) throws Exception {
              или Камень Ножницы Бумага Спок Ящерица
                 
                                                       """);
-    Boolean isWrongArgs=true;
     for(int i=0; i<args.length-1; i++){
         for(int j=i+1; j< args.length-1; j++){
-            if(args[i].equals(args[j])){isWrongArgs=false; break;}
+            if(args[i].equals(args[j])){throw err;}
         }
     }
-    if(!isWrongArgs ||(args.length<3)||(args.length % 2)==0)
+    if(args.length<3||(args.length % 2)==0)
         throw err;
    }
 
    private static void showResult(int playerTurn, int computerTurn, String[] args){
-        System.out.println("   Computer move: "+args[computerTurn]+"\n");
+
+        System.out.println("   Computer move: "+args[computerTurn-1]+"\n");
         int result= (((playerTurn-computerTurn) % args.length) + args.length) % args.length;//((x-y) % n) + n) % n
         if(result==0) System.out.println("   Draw.\n");
-        if(result<=((args.length-1)/2)) System.out.println("   You win!\n");
-        else System.out.println("   You lose...\n");
-   }
+        if(result % 2 != 0) System.out.println("   You win!\n");
+        if(result%2==0&&result!=0) System.out.println("   You lose...\n");
+    }
  }

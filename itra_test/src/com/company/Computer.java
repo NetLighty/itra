@@ -12,10 +12,11 @@ public abstract class Computer {
     private static byte[] key;
 
     public static void makeTurn(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
-        //a-0   b-(args.length-1)
+        //a: 1   b: (args.length)
+        //(int)(( Math.random() * (b - a + 1) + a)
         generateKey();
-        turn=(int)(Math.random()*(args.length + 1));
-        System.out.println("\n  HMAC: "+getHmac(args[turn], key));
+        turn=(int)(Math.random()*(args.length)+1);
+        System.out.println("\n  HMAC: "+getHmac(args[turn-1], key));
     }
     public static void showConvertedKey(){
         System.out.println("   HMAC key: "+convertBytesToHex(key));
