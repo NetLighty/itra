@@ -3,6 +3,7 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Game.start(args);
+        Game.checkArgs(args);
+        Game.start();
     }
 }

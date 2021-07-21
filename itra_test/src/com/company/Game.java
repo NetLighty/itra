@@ -1,16 +1,39 @@
 package com.company;
 
+import java.util.Scanner;
+
 public abstract class Game {
+    private static String[] verifiedArgs;
 
-    public static void start(String[] args) throws Exception {
-        checkArgs(args);
-        Computer.makeTurn(args);
-        Player.makeChoice(args);
-        showResult(Player.getTurn(), Computer.getTurn(), args);
-        Computer.showConvertedKey();
+    public static void start() throws Exception {
+            checkArgs(verifiedArgs);
+            Computer.makeTurn(verifiedArgs);
+            System.out.println("\n  Available moves: \n");
+            int playerTurn;
+            Scanner sc = new Scanner(System.in);
 
+            while (true) {
+                for (int i = 0; i < verifiedArgs.length; i++) {
+                    System.out.println("  " + (i + 1) + " - " + verifiedArgs[i] + "\n");
+                }
+                System.out.println("  0 - exit\n");
+                System.out.print("   Enter your move: ");
+                if (!sc.hasNextInt()) {
+                    System.out.println();
+                    sc.next();
+                    continue;
+                }
+                playerTurn = sc.nextInt();
+                System.out.println();
+                if (playerTurn > verifiedArgs.length || playerTurn < 0) continue;
+                if (playerTurn == 0) break;
+                System.out.println("   Your move: " + verifiedArgs[playerTurn - 1]+"\n");
+                showResult(playerTurn, Computer.getTurn(), verifiedArgs);
+                Computer.showConvertedKey();
+                break;
+        }
     }
-private static void checkArgs(String[] args) throws Exception {
+public static void checkArgs(String[] args) throws Exception {
     Exception err= new Exception("""
                 
          
@@ -21,12 +44,13 @@ private static void checkArgs(String[] args) throws Exception {
                 
                                                       """);
     for(int i=0; i<args.length-1; i++){
-        for(int j=i+1; j< args.length-1; j++){
+        for(int j=i+1; j< args.length; j++){
             if(args[i].equals(args[j])){throw err;}
         }
     }
     if(args.length<3||(args.length % 2)==0)
         throw err;
+    verifiedArgs=args;
    }
 
    private static void showResult(int playerTurn, int computerTurn, String[] args){
