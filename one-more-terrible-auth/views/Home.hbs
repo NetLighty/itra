@@ -1,0 +1,127 @@
+<title>Home</title>
+<style>
+    .color-simpleBlue{
+        color:rgba(13,110,253,0.76);
+    }
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<div id="app">
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-light">
+            <h2 class="color-simpleBlue m-2"> You are logged as: </h2>
+            <h2 class="m-2">{{CurrentUsername}}</h2>
+            <form action="/logout" method="post" class="pt-2">
+                <button class="btn btn-outline-primary btn-sm">log out</button>
+            </form>
+            <h2 class="position-absolute top-50 end-0 translate-middle-y px-4 color-simpleBlue"> {{ date }}</h2>
+        </nav>
+    </div>
+    <div>
+        <div class="position-relative pb-5">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <svg    onclick="checked('/unblock?')"
+                        type="button"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        fill="currentColor"
+                        class="bi bi-unlock m-3"
+                        viewBox="0 0 16 16">
+                    <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z"/>
+                </svg>
+                <svg   onclick="checked('/block?')"
+                       type="button"
+                       xmlns="http://www.w3.org/2000/svg"
+                       width="32"
+                       height="32"
+                       fill="currentColor"
+                       class="bi bi-lock m-3"
+                       viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                </svg>
+                <svg    onclick="checked('/delete?')"
+                        type="button"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        fill="currentColor"
+                        class="bi bi-trash m-3"
+                        viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <form id="list">
+                <thead>
+                <tr>
+                    <th scope="col" class="color-simpleBlue">
+                        <label>
+                            <input name="checkALL" class="form-check-input" type="checkbox" value="" onclick="checkAll(this)">
+                        </label>
+                    </th>
+                    <th scope="col" class="color-simpleBlue">ID</th>
+                    <th scope="col" class="color-simpleBlue">Username</th>
+                    <th scope="col" class="color-simpleBlue">E-mail</th>
+                    <th scope="col" class="color-simpleBlue">Registration</th>
+                    <th scope="col" class="color-simpleBlue">Last login</th>
+                    <th scope="col" class="color-simpleBlue">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each users}}
+                    <tr>
+                        <th scope="row">
+                            <label>
+                                <input class="formCheck" type="checkbox" value="{{this._id}}">
+                            </label>
+
+                        </th>
+                        <td>{{this.ID}}</td>
+                        <td>{{this.username}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.registrationDate}}</td>
+                        <td>{{this.lastLoginDate}}</td>
+                        <td>{{this.status}}</td>
+                {{/each}}
+                </tr>
+                </tbody>
+            </form>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function checkAll(obj) {
+        const items = document.getElementsByClassName('formCheck')
+        console.log(items)
+        for (let i = 0;  i < items.length; i++) {
+            if (obj.checked) {
+                items.item(i).checked = true;
+            } else {
+                items.item(i).checked = false;
+            }
+        }
+    }
+
+    function checked(get){
+        const boxes= document.getElementsByClassName('formCheck')
+        let checkedBoxes=[]
+        let j=0
+        for(let i=0; i<boxes.length; i++){
+            if(boxes[i].checked){
+                checkedBoxes[j]=boxes[i].value
+                j++
+            }
+        }
+        for(let i in checkedBoxes){
+            get= get + "ids="+ checkedBoxes[i]+"&"
+        }
+        window.location= get
+        console.log(get)
+        console.log(checkedBoxes)
+    }
+</script>
+
